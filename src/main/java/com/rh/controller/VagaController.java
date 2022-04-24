@@ -66,5 +66,80 @@ public class VagaController {
         return mv;
     }
 
+    //deletar vaga
+
+    @RequestMapping("/deletarVaga")
+    public String deletarVaga(long codigo) {
+        Vaga vaga = vr.findByCodigo(codigo);
+        vr.delete(vaga);
+        return "redirect:/vagas";
+
+    }
+
+
+    //Detalhes da vaga e salvar candidato
+    public String detalhesVagaPost(@PathVariable("codigo") long codigo, @Valid Candidato candidato,
+                                   BindingResult result, RedirectAttributes attributes) {
+
+        if (result.hasErrors()) {
+            attributes.addFlashAttribute("mensagem", "Verifique os campos !");
+            return "redirect:/{codigo}";
+        }
+
+        //Rg duplicado
+        if (cr.findByRg(candidato.getRg()) != null) {
+            attributes.addFlashAttribute("mensagem erro", "Rg duplicado");
+            return "redirect:/{codigo}";
+
+        }
+        Vaga vaga = vr.findByCodigo(codigo);
+        candidato.setVaga(vaga);
+        cr.save(candidato);
+        attributes.addFlashAttribute("mensagem", "Candidato adicionado com sucesso !");
+        return "redirect:/{codigo}";
+    }
+
+    //Deleta candidato
+
+
+    @RequestMapping("/deletarCandidato")
+    public String deletarCandidato(String rg) {
+        Candidato candidato = cr.findByRg(rg);
+        Vaga vaga = candidato.getVaga();
+        String codigo = "" + vaga.getCodigo();
+
+        cr.delete(candidato);
+
+        return "redirect:/" + codigo;
+
+    }
+
+    //formulario vaga
+
+    @RequestMapping(value = "/editar-vaga", method = RequestMethod.GET)
+    public ModelAndView editarVaga(long codigo) {
+        Vaga vaga = vr.findByCodigo(codigo);
+        ModelAndView mv = new ModelAndView("vaga/update-vaga");
+        mv.addObject("vaga", vaga);
+        return mv;
+
+    }
+
+    //update
+
+    @RequestMapping(value = "/editar-vaga", method = RequestMethod.POST)
+    public String updateVaga(@Valid Vaga vaga, BindingResult result, RedirectAttributes attributes) {
+
+        vr.save(vaga);
+        attributes.addFlashAttribute("Sucess", "Vaga alterada com sucesso !");
+
+        //Url de retorno
+        long codigoLong = vaga.getCodigo();
+        String codigo = "" + codigoLong;
+        return "redirect:/" + codigo;
+
+
+    }
+
 
 }
