@@ -138,12 +138,12 @@
         </thead>
         <tbody>
 
-        <tr th:each="candidato: ${candidato}">
-            <td><span th:text="${candidato.nomeCandidato}"></span></td>
-            <td><span th:text="${candidato.rg}"></span></td>
-            <td><span th:text="${candidato.email}"></span></td>
+        <tr th:each="candidatos: ${candidatos}">
+            <td><span th:text="${candidatos.nomeCandidato}"></span></td>
+            <td><span th:text="${candidatos.rg}"></span></td>
+            <td><span th:text="${candidatos.email}"></span></td>
             <td><a class="waves-effect waves-light btn-small"  th:href="${(#mvc.url('VC#deletarCandidato').
-            arg(0, candidato.rg)).build()}">
+            arg(0, candidatos.rg)).build()}">
                 <button type="button"
                         class="btn btn-danger">Excluir
                 </button>

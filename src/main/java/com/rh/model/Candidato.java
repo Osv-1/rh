@@ -12,6 +12,7 @@ public class Candidato {
     @GeneratedValue
     private long id;
 
+
     @Column(unique = true)
     private String rg;
 

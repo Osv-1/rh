@@ -50,8 +50,8 @@ public class VagaController {
     //Listar vagas
 
     @RequestMapping(value = "/vagas")
-    public ModelAndView listaVagas() {
-        ModelAndView mv = new ModelAndView("vaga/listaVagas");
+    public ModelAndView listaVaga() {
+        ModelAndView mv = new ModelAndView("vaga/listaVaga");
         Iterable<Vaga> vagas = vr.findAll();
         mv.addObject("vagas", vagas);
         return mv;
