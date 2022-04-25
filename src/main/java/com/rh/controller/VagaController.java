@@ -5,6 +5,7 @@ import com.rh.model.Candidato;
 import com.rh.model.Vaga;
 import com.rh.repository.CandidatoRepository;
 import com.rh.repository.VagaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +19,9 @@ import javax.validation.Valid;
 @Controller
 public class VagaController {
 
+    @Autowired
     private VagaRepository vr;
+    @Autowired
     private CandidatoRepository cr;
 
 
@@ -78,6 +81,7 @@ public class VagaController {
 
 
     //Detalhes da vaga e salvar candidato
+    @RequestMapping(value = "/{codigo}", method = RequestMethod.POST)
     public String detalhesVagaPost(@PathVariable("codigo") long codigo, @Valid Candidato candidato,
                                    BindingResult result, RedirectAttributes attributes) {
 
@@ -88,7 +92,7 @@ public class VagaController {
 
         //Rg duplicado
         if (cr.findByRg(candidato.getRg()) != null) {
-            attributes.addFlashAttribute("mensagem erro", "Rg duplicado");
+            attributes.addFlashAttribute("mensagem_erro", "Rg duplicado");
             return "redirect:/{codigo}";
 
         }
